@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:workout_app/pages/home_page.dart';
+import '../data/workout_data.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,9 +12,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
+    return ChangeNotifierProvider(
+        create: (context) => WorkoutData(),
+        child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomePage(),
+        ));
   }
 }
