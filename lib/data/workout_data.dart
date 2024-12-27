@@ -20,6 +20,11 @@ class WorkoutData {
     return workoutList;
   }
 
+  int numberOfExercisesInWorkout(String workoutName) {
+    Workout relevantWorkout = getRelevantWorkout(workoutName);
+    return relevantWorkout.exercises.length;
+  }
+
   void addWorkout(String name) {
     workoutList.add(Workout(name: name, exercises: []));
   }
@@ -36,7 +41,18 @@ class WorkoutData {
     ));
   }
 
+  void checkOffExercise(String workoutName, String exerciseName) {
+    Exercise relevantExercise = getRelevandExercise(workoutName, exerciseName);
+    relevantExercise.isCompleted = !relevantExercise.isCompleted;
+  }
+
   Workout getRelevantWorkout(String workoutName) {
     return workoutList.firstWhere((workout) => workout.name == workoutName);
+  }
+
+  Exercise getRelevandExercise(String workoutName, String exerciseName) {
+    Workout relevantWorkout = getRelevantWorkout(workoutName);
+    return relevantWorkout.exercises
+        .firstWhere((exercise) => exercise.name == exerciseName);
   }
 }
