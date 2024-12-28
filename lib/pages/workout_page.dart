@@ -17,12 +17,79 @@ class _WorkoutPageState extends State<WorkoutPage> {
         .checkOffExercise(workoutName, exerciseName);
   }
 
+  final TextEditingController exerciseNameController = TextEditingController();
+  final TextEditingController weightController = TextEditingController();
+  final TextEditingController repsController = TextEditingController();
+  final TextEditingController setsController = TextEditingController();
+
+  void createNewExercise() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+                title: Text('Add new exercise'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: exerciseNameController,
+                    ),
+                    TextField(
+                      controller: weightController,
+                    ),
+                    TextField(
+                      controller: repsController,
+                    ),
+                    TextField(
+                      controller: setsController,
+                    ),
+                  ],
+                ),
+                actions: [
+                  MaterialButton(
+                    onPressed: save,
+                    child: Text("Save"),
+                  ),
+                  MaterialButton(
+                    onPressed: cancel,
+                    child: const Text("Cancel"),
+                  )
+                ]));
+  }
+
+  void save() {
+    String newExerciseName = exerciseNameController.text;
+    String newWeight = weightController.text;
+    String newReps = repsController.text;
+    String newSets = setsController.text;
+    Provider.of<WorkoutData>(context, listen: false).addExercise(
+        widget.workoutName, newExerciseName, newWeight, newReps, newSets);
+
+    Navigator.pop(context);
+    clear();
+  }
+
+  void cancel() {
+    Navigator.pop(context);
+    clear();
+  }
+
+  void clear() {
+    exerciseNameController.clear();
+    weightController.clear();
+    repsController.clear();
+    setsController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<WorkoutData>(
       builder: (context, value, child) => Scaffold(
         appBar: AppBar(
           title: Text(widget.workoutName),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: createNewExercise,
+          child: Icon(Icons.add),
         ),
         body: ListView.builder(
           itemCount: value.numberOfExercisesInWorkout(widget.workoutName),
