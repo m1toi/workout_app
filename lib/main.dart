@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:workout_app/pages/home_page.dart';
 import '../data/workout_data.dart';
 
-void main() {
+void main() async {
+
+  await Hive.initFlutter();
+
+  await Hive.openBox('workout_database');
+
   runApp(const MainApp());
 }
 

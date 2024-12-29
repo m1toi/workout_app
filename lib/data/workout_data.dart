@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:workout_app/data/hive_database.dart';
 
 import '../models/workout.dart';
 import '../models/exercise.dart';
 
 class WorkoutData extends ChangeNotifier {
+
+  final db = HiveDatabase();
+
   List<Workout> workoutList = [
     Workout(
       name: "Upper Body",
@@ -18,6 +22,15 @@ class WorkoutData extends ChangeNotifier {
     )
   ];
 
+  void initializeWorkoutList(){
+    if (db.previousDataExists()){
+      workoutList = db.readFromDatabase();
+    }
+    else{
+      db.saveToDatabase(workoutList);
+    }
+  }
+
   List<Workout> getWorkoutList() {
     return workoutList;
   }
@@ -31,6 +44,8 @@ class WorkoutData extends ChangeNotifier {
     workoutList.add(Workout(name: name, exercises: []));
 
     notifyListeners();
+
+    db.saveToDatabase(workoutList);
   }
 
   void addExercise(String workoutName, String exerciseName, String weight,
@@ -45,6 +60,8 @@ class WorkoutData extends ChangeNotifier {
     ));
 
     notifyListeners();
+
+    db.saveToDatabase(workoutList);
   }
 
   void checkOffExercise(String workoutName, String exerciseName) {
@@ -52,6 +69,8 @@ class WorkoutData extends ChangeNotifier {
     relevantExercise.isCompleted = !relevantExercise.isCompleted;
 
     notifyListeners();
+
+    db.saveToDatabase(workoutList);
   }
 
   Workout getRelevantWorkout(String workoutName) {
