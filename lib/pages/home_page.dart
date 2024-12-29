@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workout_app/components/heat_map.dart';
 import 'package:workout_app/data/workout_data.dart';
 import 'workout_page.dart';
 
@@ -11,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   void initState() {
     super.initState();
@@ -77,16 +77,25 @@ class _HomePageState extends State<HomePage> {
           onPressed: createNewWorkout,
           child: const Icon(Icons.add),
         ),
-        body: ListView.builder(
-            itemCount: value.getWorkoutList().length,
-            itemBuilder: (context, index) => ListTile(
-                  title: Text(value.getWorkoutList()[index].name),
-                  trailing: IconButton(
-                    icon: Icon(Icons.arrow_forward_ios),
-                    onPressed: () =>
-                        goToWorkoutPage(value.getWorkoutList()[index].name),
-                  ),
-                )),
+        body: ListView(
+          children: [
+            MyHeatMap(
+                datasets: value.heatMapDataSet,
+                startDateYYYYMMDD: value.getStartDate()),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: value.getWorkoutList().length,
+                itemBuilder: (context, index) => ListTile(
+                      title: Text(value.getWorkoutList()[index].name),
+                      trailing: IconButton(
+                        icon: Icon(Icons.arrow_forward_ios),
+                        onPressed: () =>
+                            goToWorkoutPage(value.getWorkoutList()[index].name),
+                      ),
+                    ))
+          ],
+        ),
       ),
     );
   }

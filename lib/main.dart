@@ -5,7 +5,6 @@ import 'package:workout_app/pages/home_page.dart';
 import '../data/workout_data.dart';
 
 void main() async {
-
   await Hive.initFlutter();
 
   await Hive.openBox('workout_database');

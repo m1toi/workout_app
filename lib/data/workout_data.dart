@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/data/hive_database.dart';
+import 'package:workout_app/datetime/date_time.dart';
 
 import '../models/workout.dart';
 import '../models/exercise.dart';
 
 class WorkoutData extends ChangeNotifier {
-
   final db = HiveDatabase();
 
   List<Workout> workoutList = [
@@ -22,13 +22,14 @@ class WorkoutData extends ChangeNotifier {
     )
   ];
 
-  void initializeWorkoutList(){
-    if (db.previousDataExists()){
+  void initializeWorkoutList() {
+    if (db.previousDataExists()) {
       workoutList = db.readFromDatabase();
-    }
-    else{
+    } else {
       db.saveToDatabase(workoutList);
     }
+
+    loadHeatMap();
   }
 
   List<Workout> getWorkoutList() {
@@ -71,6 +72,8 @@ class WorkoutData extends ChangeNotifier {
     notifyListeners();
 
     db.saveToDatabase(workoutList);
+
+    loadHeatMap();
   }
 
   Workout getRelevantWorkout(String workoutName) {
@@ -81,5 +84,36 @@ class WorkoutData extends ChangeNotifier {
     Workout relevantWorkout = getRelevantWorkout(workoutName);
     return relevantWorkout.exercises
         .firstWhere((exercise) => exercise.name == exerciseName);
+  }
+
+  String getStartDate() {
+    return db.getStartDate();
+  }
+
+  Map<DateTime, int> heatMapDataSet = {};
+
+  void loadHeatMap() {
+    DateTime startDate = createDateTimeObject(getStartDate());
+
+    int daysInBetween = DateTime.now().difference(startDate).inDays;
+
+    for (int i = 0; i < daysInBetween + 1; i++) {
+      String yyyymmdd =
+          convertDateTimeObjectToYYYYMMDD(startDate.add(Duration(days: i)));
+
+      int completionStatus = db.getCompletionStatus(yyyymmdd);
+
+      int year = startDate.add(Duration(days: i)).year;
+
+      int month = startDate.add(Duration(days: i)).month;
+
+      int day = startDate.add(Duration(days: i)).day;
+
+      final percentForEachDay = <DateTime, int>{
+        DateTime(year, month, day): completionStatus
+      };
+
+      heatMapDataSet.addEntries(percentForEachDay.entries);
+    }
   }
 }
