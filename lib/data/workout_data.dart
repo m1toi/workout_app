@@ -49,6 +49,14 @@ class WorkoutData extends ChangeNotifier {
     db.saveToDatabase(workoutList);
   }
 
+  void deleteWorkout(String workoutName) {
+    workoutList.removeWhere((workout) => workout.name == workoutName);
+
+    notifyListeners();
+
+    db.deleteFromDatabase(workoutName);
+  }
+
   void addExercise(String workoutName, String exerciseName, String weight,
       String reps, String sets) {
     Workout relevantWorkout = getRelevantWorkout(workoutName);
@@ -59,6 +67,17 @@ class WorkoutData extends ChangeNotifier {
       reps: reps,
       sets: sets,
     ));
+
+    notifyListeners();
+
+    db.saveToDatabase(workoutList);
+  }
+
+  void deleteExercise(String workoutName, String exerciseName) {
+    Workout relevantWorkout = getRelevantWorkout(workoutName);
+
+    relevantWorkout.exercises
+        .removeWhere((exercise) => exercise.name == exerciseName);
 
     notifyListeners();
 

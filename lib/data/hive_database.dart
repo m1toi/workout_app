@@ -35,6 +35,12 @@ class HiveDatabase {
     _myBox.put("EXERCISES", exerciseList);
   }
 
+  void deleteFromDatabase(String workoutName) {
+    List<Workout> workouts = readFromDatabase();
+    workouts.removeWhere((workout) => workout.name == workoutName);
+    saveToDatabase(workouts);
+  }
+
   List<Workout> readFromDatabase() {
     List<Workout> mySavedWorkouts = [];
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -70,6 +71,38 @@ class _HomePageState extends State<HomePage> {
       Navigator.pop(context);
       clear();
     }
+  }
+
+  void deleteWorkout(String workoutName) {
+    Provider.of<WorkoutData>(context, listen: false).deleteWorkout(workoutName);
+  }
+
+  void confirmDeleteWorkout(String workoutName) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Delete Workout"),
+        content: Text("Are you sure you want to delete '$workoutName'?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              deleteWorkout(workoutName);
+              Navigator.pop(context);
+            },
+            child: const Text(
+              "Delete",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void cancel() {
@@ -144,6 +177,8 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () =>
                             goToWorkoutPage(value.getWorkoutList()[index].name),
                       ),
+                      onLongPress: () => confirmDeleteWorkout(
+                          value.getWorkoutList()[index].name),
                     ))
           ],
         ),
