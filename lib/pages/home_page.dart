@@ -84,8 +84,8 @@ class _HomePageState extends State<HomePage> {
   void showNotification(String workoutName) async {
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
-      'workout_channel', // Channel ID
-      'Workout Notifications', // Channel name
+      'workout_channel',
+      'Workout Notifications',
       importance: Importance.high,
       priority: Priority.high,
     );
@@ -95,15 +95,14 @@ class _HomePageState extends State<HomePage> {
     );
 
     await flutterLocalNotificationsPlugin.show(
-      0, // Notification ID
-      'New Workout Added!', // Notification title
-      'You added $workoutName to your workouts.', // Notification body
+      0,
+      'New Workout Added!',
+      'You added $workoutName to your workouts.',
       notificationDetails,
     );
   }
 
   Future<void> initializeNotifications() async {
-    // Request POST_NOTIFICATIONS permission for Android 13+
     if (await Permission.notification.isDenied) {
       await Permission.notification.request();
     }
