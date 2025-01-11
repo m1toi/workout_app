@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -65,7 +64,6 @@ class _HomePageState extends State<HomePage> {
     if (workoutName.isNotEmpty) {
       Provider.of<WorkoutData>(context, listen: false).addWorkout(workoutName);
 
-      // Show the notification
       showNotification(workoutName);
 
       Navigator.pop(context);

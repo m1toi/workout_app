@@ -24,64 +24,83 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   void createNewExercise() {
     showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-                title: Text('Add new exercise'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Exercise Name",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    TextField(
-                      controller: exerciseNameController,
-                    ),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Weight",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    TextField(
-                      controller: weightController,
-                    ),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Reps",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    TextField(
-                      controller: repsController,
-                    ),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Sets",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    TextField(
-                      controller: setsController,
-                    ),
-                  ],
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add New Exercise'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Exercise Name",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: exerciseNameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Enter exercise name",
                 ),
-                actions: [
-                  MaterialButton(
-                    onPressed: save,
-                    child: Text("Save"),
-                  ),
-                  MaterialButton(
-                    onPressed: cancel,
-                    child: const Text("Cancel"),
-                  )
-                ]));
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Weight",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: weightController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Enter weight (e.g., 10 kg)",
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Reps",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: repsController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Enter number of reps",
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Sets",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: setsController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Enter number of sets",
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: cancel,
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: save,
+            child: const Text("Save"),
+          ),
+        ],
+      ),
+    );
   }
 
   void save() {
