@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:workout_app/pages/home_page.dart';
 import 'package:workout_app/pages/welcome_page.dart';
 import '../data/workout_data.dart';
 
@@ -13,7 +12,6 @@ void main() async {
 
   await Hive.openBox('workout_database');
 
-  // Lock the app in portrait mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
