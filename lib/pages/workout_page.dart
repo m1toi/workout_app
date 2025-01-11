@@ -30,14 +30,42 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Exercise Name",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                     TextField(
                       controller: exerciseNameController,
+                    ),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Weight",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     TextField(
                       controller: weightController,
                     ),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Reps",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                     TextField(
                       controller: repsController,
+                    ),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Sets",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     TextField(
                       controller: setsController,
