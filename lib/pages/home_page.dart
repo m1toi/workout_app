@@ -1,8 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:workout_app/components/heat_map.dart';
 import 'package:workout_app/data/workout_data.dart';
 import 'workout_page.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +24,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     Provider.of<WorkoutData>(context, listen: false).initializeWorkoutList();
+
+    initializeNotifications();
   }
 
   final newWorkoutNameController = TextEditingController();
@@ -51,10 +60,16 @@ class _HomePageState extends State<HomePage> {
 
   void save() {
     String workoutName = newWorkoutNameController.text;
-    Provider.of<WorkoutData>(context, listen: false).addWorkout(workoutName);
 
-    Navigator.pop(context);
-    clear();
+    if (workoutName.isNotEmpty) {
+      Provider.of<WorkoutData>(context, listen: false).addWorkout(workoutName);
+
+      // Show the notification
+      showNotification(workoutName);
+
+      Navigator.pop(context);
+      clear();
+    }
   }
 
   void cancel() {
@@ -64,6 +79,43 @@ class _HomePageState extends State<HomePage> {
 
   void clear() {
     newWorkoutNameController.clear();
+  }
+
+  void showNotification(String workoutName) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'workout_channel', // Channel ID
+      'Workout Notifications', // Channel name
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0, // Notification ID
+      'New Workout Added!', // Notification title
+      'You added $workoutName to your workouts.', // Notification body
+      notificationDetails,
+    );
+  }
+
+  Future<void> initializeNotifications() async {
+    // Request POST_NOTIFICATIONS permission for Android 13+
+    if (await Permission.notification.isDenied) {
+      await Permission.notification.request();
+    }
+
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: androidInitializationSettings,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   @override
