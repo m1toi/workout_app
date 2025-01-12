@@ -97,6 +97,20 @@ List<String> convertObjectToWorkoutList(List<Workout> workoutList) {
   return workoutNameList;
 }
 
+/*
+    [
+        Upper Body
+        [
+            [Bench Press, 100, 10, 3, false],
+            [Bicep Curls, 20, 10, 3, false],
+        ],
+        Lower Body
+        [
+            [Squats, 100, 10, 3, false],
+            [Deadlifts, 100, 10, 3, false],
+        ],
+    ]
+*/
 List<List<List<String>>> convertObjectToExerciseList(List<Workout> workouts) {
   List<List<List<String>>> exerciseList = [];
 

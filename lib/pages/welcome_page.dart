@@ -33,7 +33,14 @@ class WelcomePage extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const Spacer(flex: 3),
+            const SizedBox(height: 20),
+            Image.asset(
+              'lib/assets/welcome_image.jpg',
+              width: 200,
+              height: 200,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacement(
